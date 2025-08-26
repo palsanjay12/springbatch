@@ -23,12 +23,12 @@ public class MyReader implements ItemReader<String> {
 
     @Override
     public String read() {
-        if (data == null || !data.hasNext()) {
-            List<String> names = Arrays.asList("alice", "bob", "charlie", "david");
-            log.info("**** MyReader ***");
-
-            this.data = names.iterator();
-        }
+//        if (data == null || !data.hasNext()) {
+//            List<String> names = Arrays.asList("alice", "bob", "charlie", "david");
+//            log.info("**** MyReader ***");
+//
+//            this.data = names.iterator();
+//        }
         return data.hasNext() ? data.next() : null;
     }
 }

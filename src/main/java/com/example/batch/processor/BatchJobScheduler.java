@@ -24,7 +24,7 @@ public class BatchJobScheduler {
     @Autowired
     private Job myJob;
 
-    @Scheduled(cron = "0 0/2 * * * ?")  // every 2 minutes
+    @Scheduled(cron = "0 0/20 * * * ?")  // every 2 minutes
     public void runJob() throws Exception {
         String jobName = myJob.getName();
 

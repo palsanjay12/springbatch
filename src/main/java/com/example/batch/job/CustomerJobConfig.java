@@ -1,6 +1,6 @@
 package com.example.batch.job;
 
-import com.example.batch.listener.JobCompletionNotificationListener;
+import com.example.batch.listener.*;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -19,7 +19,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 @RequiredArgsConstructor
 public class CustomerJobConfig {
     private final EntityManagerFactory entityManagerFactory;
-
+    private final LoggingStepListener loggingStepListener;
+    private final ItemReaderLoggingListener readerLoggingListener;
+    private final ItemWriterLoggingListener writerLoggingListener;
+    private final ItemProcessorLoggingListener processorLoggingListener;
     @Bean
     public JobCompletionNotificationListener jobCompletionNotificationListener() {
         return new JobCompletionNotificationListener();
@@ -38,10 +41,14 @@ public class CustomerJobConfig {
                        ItemProcessor<String, String> processor,
                        ItemWriter<String> writer) {
         return new StepBuilder("myStep", jobRepository)
-                .<String, String>chunk(10, transactionManager)
+                .<String, String>chunk(1, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .listener(loggingStepListener)
+                .listener(readerLoggingListener)
+                .listener(writerLoggingListener)
+                .listener(processorLoggingListener)
                 .build();
     }
 
